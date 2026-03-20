@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>יום הולדת מרים 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700;900&family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #FFD700;
+    --pink: #FF6B9D;
+    --purple: #C44DFF;
+    --blue: #4DAAFF;
+    --orange: #FF8C42;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0010;
+    font-family: 'Rubik', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: white;
+    direction: rtl;
+  }
+
+  /* CONFETTI */
+  #confetti-canvas {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 9999;
+  }
+
+  /* ANIMATED BG */
+  .anim-bg {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .bubble {
+    position: absolute; border-radius: 50%; opacity: 0.12;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(110vh); opacity: 0; }
+    10%  { opacity: 0.15; }
+    90%  { opacity: 0.12; }
+    100% { transform: translateY(-20vh); opacity: 0; }
+  }
+
+  /* PAGES */
+  .page {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px 80px;
+    position: relative;
+    z-index: 1;
+    gap: 22px;
+  }
+  .page.active { display: flex; }
+
+  /* ── PAGE 1: INTRO ── */
+  #page1 { background: radial-gradient(ellipse at center, #1a0030 0%, #0a0010 70%); }
+
+  .star-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  .star {
+    position: absolute; background: white; border-radius: 50%;
+    animation: twinkle ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%,100% { opacity: 0.15; } 50% { opacity: 1; }
+  }
+
+  .envelope {
+    font-size: 110px; cursor: pointer;
+    animation: bounce 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(255,215,0,.7));
+  }
+  @keyframes bounce {
+    0%,100% { transform: translateY(0) rotate(-5deg); }
+    50%      { transform: translateY(-18px) rotate(5deg); }
+  }
+
+  .big-title {
+    font-family: 'Amatic SC', cursive;
+    font-size: clamp(38px, 10vw, 75px);
+    background: linear-gradient(135deg, var(--gold), var(--pink), var(--purple), var(--blue));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    text-align: center; line-height: 1.2;
+  }
+
+  .open-btn {
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border: none; color: white;
+    font-family: 'Rubik', sans-serif; font-size: 22px; font-weight: 700;
+    padding: 16px 48px; border-radius: 50px; cursor: pointer;
+    box-shadow: 0 0 40px rgba(196,77,255,.5);
+    animation: pulsebtn 2s ease-in-out infinite;
+    transition: transform .2s;
+  }
+  .open-btn:hover { transform: scale(1.06); }
+  @keyframes pulsebtn {
+    0%,100% { box-shadow: 0 0 40px rgba(196,77,255,.5); }
+    50%      { box-shadow: 0 0 70px rgba(255,107,157,.8); }
+  }
+
+  /* ── PAGE 2: PHOTO ── */
+  #page2 { background: radial-gradient(ellipse at top, #200040 0%, #0a0010 60%); }
+
+  .age-badge {
+    font-family: 'Amatic SC', cursive;
+    font-size: clamp(55px, 18vw, 130px); font-weight: 700;
+    background: linear-gradient(135deg, var(--gold), var(--orange));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(255,215,0,.4));
+    animation: scaleIn .8s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes scaleIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  .photo-wrap { position: relative; display: inline-block; }
+
+  .photo-ring {
+    width: min(310px, 86vw); height: min(310px, 86vw);
+    border-radius: 50%; overflow: hidden;
+    border: 5px solid transparent;
+    background:
+      linear-gradient(#0a0010,#0a0010) padding-box,
+      linear-gradient(135deg, var(--gold), var(--pink), var(--purple), var(--blue)) border-box;
+    animation: glowRing 4s linear infinite;
+  }
+  @keyframes glowRing {
+    0%   { box-shadow: 0 0 55px rgba(255,215,0,.5); }
+    33%  { box-shadow: 0 0 55px rgba(196,77,255,.5); }
+    66%  { box-shadow: 0 0 55px rgba(255,107,157,.5); }
+    100% { box-shadow: 0 0 55px rgba(255,215,0,.5); }
+  }
+
+  .photo-ring img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center 15%;
+  }
+
+  .orbit-emoji {
+    position: absolute; top: 50%; left: 50%;
+    font-size: 26px; pointer-events: none;
+    animation: orbit linear infinite;
+  }
+  @keyframes orbit {
+    from { transform: rotate(0deg) translateX(168px) rotate(0deg); }
+    to   { transform: rotate(360deg) translateX(168px) rotate(-360deg); }
+  }
+
+  .name-lbl {
+    font-family: 'Amatic SC', cursive;
+    font-size: clamp(46px, 14vw, 85px);
+    background: linear-gradient(135deg, var(--pink), var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    text-align: center;
+  }
+
+  /* ── PAGE 3: BLESSING ── */
+  #page3 { background: radial-gradient(ellipse at bottom, #001a30 0%, #0a0010 60%); }
+
+  .blessing-box {
+    background: rgba(255,255,255,.05);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,215,0,.2);
+    border-radius: 28px; padding: 30px;
+    max-width: 640px; width: 100%;
+    position: relative; overflow: hidden;
+  }
+  .blessing-box::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--pink), var(--purple), var(--blue), var(--gold));
+    background-size: 200% 100%;
+    animation: slide 3s linear infinite;
+  }
+  @keyframes slide { to { background-position: -200% 0; } }
+
+  .blessing-hdr {
+    font-family: 'Amatic SC', cursive; font-size: 34px;
+    color: var(--gold); text-align: center; margin-bottom: 14px;
+  }
+  .blessing-txt { font-size: 15.5px; line-height: 1.95; color: rgba(255,255,255,.9); text-align: right; }
+  .hl { color: var(--gold); font-weight: 700; }
+  .love-sig { text-align: center; margin-top: 18px; font-size: 21px; color: var(--pink); font-weight: 700; }
+
+  /* ── PAGE 4: SONG ── */
+  #page4 { background: radial-gradient(ellipse at center, #001520 0%, #0a0010 70%); }
+
+  .sec-title {
+    font-family: 'Amatic SC', cursive;
+    font-size: clamp(38px, 10vw, 65px); text-align: center;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+
+  .cover-wrap {
+    position: relative;
+    width: min(300px, 86vw); border-radius: 18px; overflow: hidden;
+    box-shadow: 0 0 50px rgba(77,170,255,.35);
+  }
+  .cover-wrap img { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: center 15%; display: block; }
+  .cover-wrap::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(77,170,255,.25), rgba(196,77,255,.25));
+  }
+
+  .player-box {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(77,170,255,.3);
+    border-radius: 18px; padding: 18px 22px;
+    width: min(300px, 86vw);
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+  }
+
+  .eq { display: flex; align-items: flex-end; gap: 4px; height: 36px; }
+  .eq-b {
+    width: 5px; border-radius: 3px;
+    background: linear-gradient(to top, var(--blue), var(--purple));
+    animation: eqA .8s ease-in-out infinite alternate;
+  }
+  @keyframes eqA { from { height: 5px; } to { height: 32px; } }
+  .eq-b:nth-child(2){animation-delay:.1s} .eq-b:nth-child(3){animation-delay:.2s}
+  .eq-b:nth-child(4){animation-delay:.15s} .eq-b:nth-child(5){animation-delay:.05s}
+  .eq-b.stopped { animation-play-state: paused; height: 5px !important; }
+
+  .play-btn {
+    width: 66px; height: 66px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    border: none; font-size: 26px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 28px rgba(77,170,255,.5); transition: transform .2s;
+  }
+  .play-btn:hover { transform: scale(1.1); }
+
+  .prog-bar {
+    width: 100%; -webkit-appearance: none; height: 5px;
+    border-radius: 3px; background: rgba(255,255,255,.2); cursor: pointer; outline: none;
+  }
+  .prog-bar::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 14px; height: 14px;
+    border-radius: 50%; background: var(--blue); cursor: pointer;
+  }
+  .time-lbl { font-size: 12px; color: rgba(255,255,255,.55); }
+
+  /* ── PAGE 5: VIDEO ── */
+  #page5 { background: radial-gradient(ellipse at top right, #200020 0%, #0a0010 70%); }
+
+  .vid-wrap {
+    width: min(390px, 94vw); border-radius: 18px; overflow: hidden;
+    box-shadow: 0 0 55px rgba(255,107,157,.3);
+    border: 2px solid rgba(255,107,157,.25);
+  }
+  .vid-wrap video { width: 100%; display: block; max-height: 55vh; }
+
+  /* ── PAGE 6: BOT ── */
+  #page6 {
+    background: radial-gradient(ellipse at bottom left, #1a0030 0%, #0a0010 70%);
+    padding: 20px 16px 70px;
+    justify-content: flex-start;
+    height: 100vh;
+    overflow: hidden;
+    gap: 10px;
+  }
+
+  .bot-title {
+    font-family: 'Amatic SC', cursive;
+    font-size: clamp(34px, 9vw, 58px); text-align: center;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    flex-shrink: 0;
+  }
+  .bot-sub { text-align: center; color: rgba(255,255,255,.45); font-size: 13px; flex-shrink: 0; }
+
+  .chat-area {
+    width: min(500px, 96vw);
+    display: flex; flex-direction: column;
+    flex: 1; overflow: hidden; min-height: 0;
+  }
+
+  .chat-msgs {
+    flex: 1; overflow-y: auto; min-height: 0;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(196,77,255,.2);
+    border-radius: 18px 18px 0 0;
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 10px;
+    direction: rtl;
+  }
+
+  .msg {
+    max-width: 82%;
+    padding: 11px 16px;
+    border-radius: 16px;
+    font-size: 15px; line-height: 1.55;
+    direction: rtl; text-align: right;
+    word-break: break-word;
+    animation: msgPop .35s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes msgPop { from { transform: scale(.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  .msg-bot {
+    background: linear-gradient(135deg, rgba(196,77,255,.18), rgba(255,107,157,.1));
+    border: 1px solid rgba(196,77,255,.28);
+    border-radius: 16px 16px 16px 4px;
+    align-self: flex-start;
+  }
+  .msg-user {
+    background: linear-gradient(135deg, rgba(77,170,255,.18), rgba(77,170,255,.08));
+    border: 1px solid rgba(77,170,255,.28);
+    border-radius: 16px 16px 4px 16px;
+    align-self: flex-end;
+  }
+
+  .typing {
+    display: none; align-self: flex-start; gap: 5px; align-items: center;
+    background: rgba(196,77,255,.13); border: 1px solid rgba(196,77,255,.2);
+    border-radius: 16px 16px 16px 4px; padding: 11px 16px;
+  }
+  .typing.on { display: flex; }
+  .tdot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--purple);
+    animation: tBounce 1.2s ease-in-out infinite;
+  }
+  .tdot:nth-child(2){animation-delay:.2s} .tdot:nth-child(3){animation-delay:.4s}
+  @keyframes tBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-7px)} }
+
+  .chat-input-bar {
+    display: flex;
+    border: 1px solid rgba(196,77,255,.25);
+    border-top: none;
+    border-radius: 0 0 18px 18px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .chat-inp {
+    flex: 1; background: rgba(255,255,255,.06);
+    border: none; outline: none;
+    padding: 14px 18px;
+    font-family: 'Rubik', sans-serif; font-size: 15px; color: white;
+    direction: rtl; text-align: right;
+  }
+  .chat-inp::placeholder { color: rgba(255,255,255,.3); }
+  .chat-send {
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    border: none; padding: 14px 22px;
+    font-size: 20px; cursor: pointer; transition: filter .2s;
+    flex-shrink: 0;
+  }
+  .chat-send:hover { filter: brightness(1.2); }
+
+  /* ── BUTTONS ── */
+  .btn {
+    border: none; color: white;
+    font-family: 'Rubik', sans-serif; font-size: 17px; font-weight: 700;
+    padding: 13px 36px; border-radius: 50px; cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-blue   { background: linear-gradient(135deg, var(--blue), var(--purple)); box-shadow: 0 4px 18px rgba(77,170,255,.35); }
+  .btn-pink   { background: linear-gradient(135deg, var(--pink), var(--orange)); box-shadow: 0 4px 18px rgba(255,107,157,.35); }
+  .btn-gold   { background: linear-gradient(135deg, var(--gold), var(--orange)); color: #1a0020; box-shadow: 0 4px 18px rgba(255,215,0,.35); }
+  .btn-purple { background: linear-gradient(135deg, var(--purple), var(--pink)); box-shadow: 0 4px 18px rgba(196,77,255,.35); }
+
+  .btn-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+
+  /* ── NAV DOTS ── */
+  .nav-dots {
+    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+    display: none; gap: 10px; z-index: 100;
+  }
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(255,255,255,.3); border: none; cursor: pointer; transition: all .3s;
+  }
+  .dot.on { background: var(--gold); transform: scale(1.4); box-shadow: 0 0 10px rgba(255,215,0,.6); }
+
+  /* page transition */
+  .page.active { animation: pgIn .5s ease; }
+  @keyframes pgIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+<div class="anim-bg" id="animBg"></div>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+  <div class="star-bg" id="starBg"></div>
+  <div class="envelope" onclick="openCard()">💌</div>
+  <h1 class="big-title">יש לך הפתעה<br>מיוחדת! ✨</h1>
+  <p style="color:rgba(255,255,255,.6);font-size:17px">לחצי כדי לפתוח את המעטפה</p>
+  <button class="open-btn" onclick="openCard()">🎉 פתחי אותי!</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+  <div class="age-badge">16 🎂</div>
+  <div class="photo-wrap">
+    <div class="photo-ring">
+      <img src="miriam.jpg" alt="מרים">
+    </div>
+    <span class="orbit-emoji" style="animation-duration:6s;animation-delay:0s">⭐</span>
+    <span class="orbit-emoji" style="animation-duration:6s;animation-delay:-1.5s">💖</span>
+    <span class="orbit-emoji" style="animation-duration:6s;animation-delay:-3s">✨</span>
+    <span class="orbit-emoji" style="animation-duration:6s;animation-delay:-4.5s">🌟</span>
+  </div>
+  <div class="name-lbl">מרים 👑</div>
+  <div class="btn-row">
+    <button class="btn btn-pink" onclick="go(3)">לברכה שלי ❤️</button>
+    <button class="btn btn-blue" onclick="go(4)">לשיר 🎵</button>
+    <button class="btn btn-gold" onclick="window.open('miriam_game.html')">🎮 משחק!</button>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+  <div class="blessing-box">
+    <div class="blessing-hdr">💌 מאבא, מאמא ומכולם 💌</div>
+    <p class="blessing-txt">
+      <span class="hl">מרים, חיים שלי,</span><br><br>
+      כמה מרגש – הנה הגעת לגיל 16! את ממש לקראת פריצת הדרך שלך לחיים האמיתיים. עוד קצת סבלנות ואת על ראש הפסגה!<br><br>
+      חיים שלי, כמה שאת <span class="hl">לוחמת אמיתית</span> – כמה שאת חזקה באמת שלך! <span class="hl">אני גאה בך!</span><br><br>
+      שמח שיש לי אותך, <span class="hl">אבירה שלי! לב שלי! חיים שלי!</span><br><br>
+      תמשיכי ככה ותראי שהחיים עוד יאירו לך פנים 🌟<br><br>
+      מה שנשאר הוא לברך אותך – בשמי, בשם אמא, ובשם כולם – שתזכי לעוד <span class="hl">שנים רבות נעימות וטובות</span>, מתוך בריאות, שמחה ואמונה, נחת ושלווה.<br><br>
+      <span class="hl">אוהבים בלי סוף! 💕</span>
+    </p>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-blue" onclick="go(2)">← חזרה</button>
+    <button class="btn btn-pink" onclick="go(4)">לשיר 🎵</button>
+  </div>
+</div>
+
+<!-- PAGE 4: SONG -->
+<div class="page" id="page4">
+  <h2 class="sec-title">🎵 השיר שלך</h2>
+  <div class="cover-wrap">
+    <img src="miriam.jpg" alt="עטיפה">
+  </div>
+  <div class="player-box">
+    <div class="eq" id="eq">
+      <div class="eq-b stopped"></div>
+      <div class="eq-b stopped" style="animation-delay:.1s"></div>
+      <div class="eq-b stopped" style="animation-delay:.2s"></div>
+      <div class="eq-b stopped" style="animation-delay:.15s"></div>
+      <div class="eq-b stopped" style="animation-delay:.05s"></div>
+    </div>
+    <button class="play-btn" id="playBtn" onclick="togglePlay()">▶️</button>
+    <input type="range" class="prog-bar" id="progBar" value="0" min="0" max="100" oninput="seek(this.value)">
+    <div class="time-lbl" id="timeLbl">0:00 / 0:00</div>
+  </div>
+  <audio id="songAudio" src="song.mp4" preload="metadata"></audio>
+  <div class="btn-row">
+    <button class="btn btn-blue" onclick="go(3)">← חזרה</button>
+    <button class="btn btn-pink" onclick="go(5)">לסרטון 🎬</button>
+  </div>
+</div>
+
+<!-- PAGE 5: VIDEO -->
+<div class="page" id="page5">
+  <h2 class="sec-title">🎬 הסרטון שלה</h2>
+  <div class="vid-wrap">
+    <video src="video.mp4" controls playsinline preload="metadata"></video>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-blue" onclick="go(4)">← חזרה</button>
+    <button class="btn btn-gold" onclick="go(6)">לבוט החיובי 🤖</button>
+  </div>
+</div>
+
+<!-- PAGE 6: BOT -->
+<div class="page" id="page6">
+  <h2 class="bot-title">💬 החבר שלי</h2>
+  <p class="bot-sub">דברי איתי על הכל – אני כאן ומקשיב</p>
+  <div class="chat-area">
+    <div class="chat-msgs" id="chatMsgs">
+      <div class="msg msg-bot">היי מרים 🎂 יום הולדת שמח. מה עובר עלייך היום?</div>
+      <div class="typing" id="typing">
+        <div class="tdot"></div><div class="tdot"></div><div class="tdot"></div>
+      </div>
+    </div>
+    <div class="chat-input-bar">
+      <input class="chat-inp" id="chatInp" type="text" dir="rtl" placeholder="כתבי משהו... 💬"
+             onkeydown="if(event.key==='Enter')sendMsg()">
+      <button class="chat-send" onclick="sendMsg()">➤</button>
+    </div>
+  </div>
+  <button class="btn btn-purple" onclick="go(2)" style="margin-top:6px;font-size:15px;padding:10px 28px">← חזרה לתחילה</button>
+</div>
+
+<!-- NAV DOTS -->
+<div class="nav-dots" id="navDots">
+  <button class="dot" onclick="go(2)" title="תמונה"></button>
+  <button class="dot" onclick="go(3)" title="ברכה"></button>
+  <button class="dot" onclick="go(4)" title="שיר"></button>
+  <button class="dot" onclick="go(5)" title="סרטון"></button>
+  <button class="dot" onclick="go(6)" title="בוט"></button>
+</div>
+
+<script>
+// ─── NAV ───────────────────────────────────────────────
+let cur = 1;
+function go(n) {
+  document.getElementById('page'+cur).classList.remove('active');
+  document.getElementById('page'+n).classList.add('active');
+  cur = n;
+  const nd = document.getElementById('navDots');
+  if (n === 1) { nd.style.display = 'none'; return; }
+  nd.style.display = 'flex';
+  document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('on', i === n-2));
+}
+function openCard() { confettiBurst(); setTimeout(() => go(2), 300); }
+
+// ─── STARS ─────────────────────────────────────────────
+(function(){
+  const c = document.getElementById('starBg');
+  for (let i=0;i<80;i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    const z = Math.random()*3+1;
+    s.style.cssText=`width:${z}px;height:${z}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-duration:${Math.random()*3+2}s;animation-delay:${Math.random()*3}s`;
+    c.appendChild(s);
+  }
+})();
+
+// ─── BUBBLES ───────────────────────────────────────────
+(function(){
+  const bg = document.getElementById('animBg');
+  const cols=['#FFD700','#FF6B9D','#C44DFF','#4DAAFF','#FF8C42'];
+  for(let i=0;i<14;i++){
+    const b=document.createElement('div'); b.className='bubble';
+    const sz=Math.random()*140+50;
+    b.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;background:${cols[i%5]};animation-duration:${Math.random()*14+9}s;animation-delay:${Math.random()*9}s`;
+    bg.appendChild(b);
+  }
+})();
+
+// ─── AUDIO PLAYER ──────────────────────────────────────
+let playing = false;
+const aud = document.getElementById('songAudio');
+
+aud.addEventListener('timeupdate', () => {
+  if (!aud.duration) return;
+  document.getElementById('progBar').value = (aud.currentTime/aud.duration)*100;
+  document.getElementById('timeLbl').textContent = fmt(aud.currentTime)+' / '+fmt(aud.duration);
+});
+aud.addEventListener('ended', () => {
+  playing = false;
+  document.getElementById('playBtn').textContent = '▶️';
+  document.querySelectorAll('.eq-b').forEach(b => b.classList.add('stopped'));
+});
+
+function togglePlay() {
+  if (playing) {
+    aud.pause();
+    document.getElementById('playBtn').textContent = '▶️';
+    document.querySelectorAll('.eq-b').forEach(b => b.classList.add('stopped'));
+  } else {
+    aud.play().catch(e => console.log('play err:', e));
+    document.getElementById('playBtn').textContent = '⏸️';
+    document.querySelectorAll('.eq-b').forEach(b => b.classList.remove('stopped'));
+  }
+  playing = !playing;
+}
+function seek(v) { if(aud.duration) aud.currentTime = (v/100)*aud.duration; }
+function fmt(s) { const m=Math.floor(s/60),sec=Math.floor(s%60); return m+':'+(sec<10?'0':'')+sec; }
+
+// ─── CONFETTI ──────────────────────────────────────────
+const cvs = document.getElementById('confetti-canvas');
+const ctx2 = cvs.getContext('2d');
+let parts = [];
+function resizeCvs(){ cvs.width=innerWidth; cvs.height=innerHeight; }
+resizeCvs(); addEventListener('resize', resizeCvs);
+
+function confettiBurst(){
+  const cols=['#FFD700','#FF6B9D','#C44DFF','#4DAAFF','#FF8C42','#fff'];
+  for(let i=0;i<220;i++) parts.push({
+    x:Math.random()*cvs.width, y:-10,
+    w:Math.random()*10+4, h:Math.random()*6+3,
+    col:cols[Math.floor(Math.random()*cols.length)],
+    rot:Math.random()*360, spd:Math.random()*4+2,
+    rs:Math.random()*5-2.5, drift:Math.random()*3-1.5
+  });
+}
+(function loop(){
+  ctx2.clearRect(0,0,cvs.width,cvs.height);
+  parts = parts.filter(p=>p.y<cvs.height+20);
+  parts.forEach(p=>{
+    p.y+=p.spd; p.x+=p.drift; p.rot+=p.rs;
+    ctx2.save(); ctx2.translate(p.x,p.y); ctx2.rotate(p.rot*Math.PI/180);
+    ctx2.fillStyle=p.col; ctx2.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+    ctx2.restore();
+  });
+  requestAnimationFrame(loop);
+})();
+
+// ─── CHAT BOT ──────────────────────────────────────────
+const SYS = `אתה "החבר שלי" – חבר אמיתי, חכם ואמפתי של מרים בת ה-16.
+אתה לא בוט. אתה לא חוזר על מנטרות. אתה מקשיב באמת ומגיב בצורה אנושית, חכמה וייחודית לכל מה שהיא אומרת.
+
+האישיות שלך:
+- חם אבל לא מגזים. מצחיק כשצריך. רציני כשצריך.
+- מקשיב לפרטים קטנים ומתייחס אליהם ספציפית – לא תשובות גנריות
+- נותן עצות אמיתיות ומעשיות, לא רק "את מדהימה!"
+- יודע לשאול שאלה טובה אחת שפותחת שיחה
+- מעודד מתוך הבנה אמיתית, לא מחמאות ריקות
+- לפעמים מסכים, לפעמים מאתגר אותה בעדינות לחשוב אחרת
+- זוכר מה היא אמרה בשיחה ומתייחס לזה
+
+כללים קשיחים:
+- עברית בלבד
+- אל תחזור על ביטויים כמו "את מדהימה", "את חזקה" יותר מפעם אחת בשיחה
+- תגובות בגובה העיניים – לא מטיפות, לא מלמעלה
+- 2-4 משפטים מקסימום. תמציתי וחד.
+- אמוג'י בצמצום – רק כשזה מרגיש טבעי`;
+
+const hist = [];
+
+async function sendMsg() {
+  const inp = document.getElementById('chatInp');
+  const txt = inp.value.trim();
+  if (!txt) return;
+  inp.value = '';
+
+  addMsg(txt, 'user');
+  hist.push({role:'user', content:txt});
+
+  const typing = document.getElementById('typing');
+  // move typing to end of messages
+  const msgs = document.getElementById('chatMsgs');
+  msgs.appendChild(typing);
+  typing.classList.add('on');
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:500,
+        system: SYS,
+        messages: hist
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || '💜 את מדהימה מרים!';
+    hist.push({role:'assistant', content:reply});
+    typing.classList.remove('on');
+    addMsg(reply, 'bot');
+  } catch(e) {
+    typing.classList.remove('on');
+    addMsg('💜 את מדהימה מרים! זכרי תמיד כמה את חזקה וחיובית!', 'bot');
+  }
+}
+
+function addMsg(txt, who) {
+  const msgs = document.getElementById('chatMsgs');
+  const typing = document.getElementById('typing');
+  const div = document.createElement('div');
+  div.className = 'msg ' + (who==='user' ? 'msg-user' : 'msg-bot');
+  div.textContent = (who==='bot' ? '✨ ' : '') + txt;
+  msgs.insertBefore(div, typing);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+</script>
+</body>
+</html>
